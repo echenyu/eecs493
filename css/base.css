@@ -1,0 +1,113 @@
+head, body {
+  font-family: 'Ubuntu', Tahoma, sans-serif;
+}
+
+#nav { 
+  width: 100%;
+  margin: auto;
+  float: right;
+  letter-spacing: 1px;
+}
+
+#nav ul {
+  list-style: none;
+  width: 100%;
+  margin: 0 auto;
+}
+
+#nav li {
+  float: right; 
+}
+
+#nav li a {
+  display: block;
+  padding: 8px 15px;
+  text-decoration: none;
+  font-weight: bold;
+  color: #069;
+  border-right: 1px solid #ccc;
+  transition: all 0.2s ease 0s;
+}
+
+#nav li:first-child a {
+  border-right: 1px solid #ccc; 
+}
+
+#nav li a:hover {
+  color: #9CE62A !important;
+}
+
+#nav li a:hover {
+  color: #c00;
+  background-color: #fff; 
+}
+
+.center-content {
+  margin: auto;
+  width: 80%;
+  text-align: center;
+}
+
+#title {
+  font-size: 80px;
+  font-weight: bold;
+  color: #9CE62A;
+  letter-spacing: 2px;
+}
+
+#subtitle1 {
+  font-size: 15px;
+  color: gray;
+}
+
+.description {
+  font-size: 30px;
+  color: black;
+}
+
+.description1 {
+  font-size: 20px;
+  color: gray;
+}
+
+.description2 {
+  font-size: 13px;
+  color: gray;
+}
+
+.line {
+  margin: auto;
+  background-color: #9CE62A;
+  position: relative;
+  height: 4px;
+  margin-top: -15px;
+  width: 162px;
+}
+
+a {
+  color: black;
+}
+
+a:hover {
+  color: black;
+  text-decoration: none;
+}
+
+table {
+  margin: auto;
+}
+
+input[type="submit"], input[type="button"] {
+  background-color: transparent;
+  border: solid black 2px;
+  transition: all 0.3s ease 0s;
+}
+
+input[type="submit"]:hover, input[type="button"]:hover {
+  color:  #9CE62A;
+  border: solid 2px #9CE62A;
+}
+
+td {
+  padding: 10px;
+}
