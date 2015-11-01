@@ -1,11 +1,13 @@
 .greenBtn {
     color: green;
-    margin-right: 5px
+    margin-right: 5px;
+    align: right;
 }
 
 .redBtn {
     color: red;
-    margin-left: 10px
+    margin-left: 10px;
+    align: right;
 }
 
 .event {
@@ -15,7 +17,18 @@
 }
 
 .eventName {
-    height: 200px;
+    height: 250px;
     /*border: 2px solid black;*/
     background-color: palegoldenrod
+}
+
+.img {
+    display: block;
+    margin: auto;
+    width: auto;
+}
+
+p {
+    float:right;
+    width: 400px;
 }
