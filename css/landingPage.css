@@ -1,0 +1,34 @@
+.greenBtn {
+    color: green;
+    margin-right: 5px;
+    align: right;
+}
+
+.redBtn {
+    color: red;
+    margin-left: 10px;
+    align: right;
+}
+
+.event {
+    border-top: 3px solid blue;
+    border-left: 3px solid blue;
+    border-right: 3px solid blue;
+}
+
+.eventName {
+    height: 250px;
+    /*border: 2px solid black;*/
+    background-color: palegoldenrod
+}
+
+.img {
+    display: block;
+    margin: auto;
+    width: auto;
+}
+
+p {
+    float:right;
+    width: 400px;
+}
