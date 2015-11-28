@@ -30,9 +30,20 @@
           }
         });
       }
+
+    function checkLoggedIn() {
+      var currentUser = Parse.User.current();
+      if (currentUser) {
+          // do stuff with the user
+          window.location.href = "home.html";
+      } else {
+          // show the signup or login page
+
+      }
+    }
   </script>
 </head>
-<body background="background.png">
+<body background="background.png" onload="checkLoggedIn()">
   <form id="loginForm" class="login">
     <h1>EveMt</h1>
     <input type="email" name="email" class="login-input" placeholder="Email Address" id="username-val" autofocus required aria-required="true" >
