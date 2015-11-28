@@ -1,94 +1,95 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>EveMt</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+  <link rel="stylesheet" href="css/eventStyle.css">
 
-    <title>eveMt</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="css/landingPage.css" rel="stylesheet">
 </head>
 
-<body>
+<body background="background.png">
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-        <div class="container">
-            <h1>eveMt</h1>
-        </div>
-    </div>
+  <div>
+  	<img src="images/logo.png" alt="EveMt" style='width:13%'>
+  </div>
 
-    <div class="container">
-        <div class="container event">
-            <div class="row">
-                <img src="images/Event1.jpg" />
-                <p class="eventName">This is the event</p>
-            </div>
-            <div class="row" style="height: 50px;">
-                <div class="col-md-9"></div>
-                <div class="col-xs-1 col-sm-1 col-md-1">
-                    <button class="btn btn-default greenBtn">Going</button>
-                </div>
-                <div class="col-xs-1 col-sm-1 col-md-1">
-                    <button class="btn btn-default redBtn">Not Going</button>
-                </div>
-            </div>
-        </div>
-        <div class="container event">
-            <div class="row">
-                <img src="images/event2.jpg" />
-                <p class="eventName">This is the event</p>
-            </div>
-            <div class="row" style="height: 50px;">
-                <div class="col-md-9"></div>
-                <div class="col-xs-1 col-sm-1 col-md-1">
-                    <button class="btn btn-default greenBtn">Going</button>
-                </div>
-                <div class="col-xs-1 col-sm-1 col-md-1">
-                    <button class="btn btn-default redBtn">Not Going</button>
-                </div>
-            </div>
-        </div>
-        <div class="container event">
-            <div class="row">
-                <img src="images/event3.jpg" />
-                <p class="eventName">This is the event</p>
-            </div>
-            <div class="row" style="height: 50px;">
-                <div class="col-md-9"></div>
-                <div class="col-xs-1 col-sm-1 col-md-1">
-                    <button class="btn btn-default greenBtn">Going</button>
-                </div>
-                <div class="col-xs-1 col-sm-1 col-md-1">
-                    <button class="btn btn-default redBtn">Not Going</button>
-                </div>
-            </div>
-        </div>
-        <div class="container event">
-            <div class="row">
-                <img src="images/event4.jpg" />
-                <p class="eventName">This is the event</p>
-            </div>
-            <div class="row" style="height: 50px;">
-                <div class="col-md-9"></div>
-                <div class="col-xs-1 col-sm-1 col-md-1">
-                    <button class="btn btn-default greenBtn">Going</button>
-                </div>
-                <div class="col-xs-1 col-sm-1 col-md-1">
-                    <button class="btn btn-default redBtn">Not Going</button>
-                </div>
-            </div>
-        </div>
-    </div>
+  <div>
+  	<table id="mainList">
+  	</table>
+  </div>
+
+  <script type="text/javascript">
+    Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
+    events = [];
+
+  	window.onload = function() {
+  	  loadLandingPage();
+  	};
+
+    $(document).on('click', '#going', function() {
+      var id = $(this).closest('tr').attr('id');
+      console.log(events[id]);
+    });
+
+    $(document).on('click', '#notgoing', function() {
+      var id = $(this).closest('tr').attr('id');
+      console.log(events[id]);
+    });
+
+  	function loadLandingPage() {
+  	  var event = Parse.Object.extend("event");
+  	  var query = new Parse.Query(event);
+  	  var addElements = "";
+  	  
+  	  query.equalTo("private", false);
+  	  query.find({
+  	  	success: function(results) {
+   			console.log("Successfully retrieved " + results.length + " public events.");
+  	  		for (var i = 0; i < results.length; i++) {
+  	  			var object = results[i];
+
+  	  			var eventPhoto = object.get('eventPhoto');
+            var eventPhotoURL;
+            if (eventPhoto == null) eventPhotoURL = "images/logo.png";
+            else eventPhotoURL = eventPhoto.url();
+
+            var eventTitle;
+            if (object.get('Title') == null) eventTitle = "Event Title Unavailable";
+            else eventTitle = object.get('Title');
+
+            var eventDescription;
+            if (object.get('description') == null) eventDescription = "Event Description Unavailable";
+            else eventDescription = object.get('description');    
+
+            var eventLocation;
+            if (object.get('location') == null) eventLocation = "Event Location Unavailable;";
+            else eventLocation = object.get('location') + ";";   
+
+            var eventDateAndTime;
+            if (object.get('dateAndTime') == null) eventDateAndTime = "Event Date and Time Unavailable";
+            else eventDateAndTime = object.get('dateAndTime').toString().substring(0,21); 
+
+            events[i] = object.id;
+  	  			addElements += "<tr id=" + i.toString() + " bgcolor='#294779'>" 
+                         + "<td> <img src=" + eventPhotoURL + " style='width:500px;height:209px;'> </td>" 
+                            + "<td>" 
+                              + "<li class='boxedentry' style='height:20px;width:380px'>" + eventTitle + "</li>"
+                              + "<li class='boxedentry' style='height:80px;'>" + eventDescription + "</li>"
+                              + "<li class='entry'>" + eventLocation + " "  + eventDateAndTime + "</li>"
+                              + "<button id='going'> Going </button>"
+                              + "<button id='notgoing'> Not Going </button>"
+                            + "</td>"
+                         + "</tr>"
+  	  		}
+  	  		document.getElementById("mainList").innerHTML = addElements;
+  	  	},
+  	  	error: function(error) {
+  	        console.log("Error: " + error.code + " " + error.message);
+  	  	}
+  	  });
+  	}
+  </script>
 </body>
-</html>
