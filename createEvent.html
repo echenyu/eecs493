@@ -19,12 +19,14 @@
         event.preventDefault(); 
         Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
         
+
         var eventVar = new Parse.Object("event");
         eventVar.set("Title", document.getElementById("event-name").value);
         eventVar.set("description", document.getElementById("description-val").value);
         eventVar.set("location", document.getElementById("location").value);
         eventVar.set("numGoing", 1);
         var form = document.getElementById("eventtype");
+
         if($('input[name="eventtype"]:checked').val() == "Private"){
           eventVar.set("private", true);
         }
@@ -37,13 +39,16 @@
         var timeVar = time.split(':');  
         dateToAdd.setHours(timeVar[0]); 
         dateToAdd.setMinutes(timeVar[1]); 
+
         //Setting up the day part of the variable
         var day = document.getElementById("date").value;
         var dayVar = day.split('-'); 
         dateToAdd.setDate(dayVar[2]);
         dateToAdd.setYear(dayVar[0]);
         dateToAdd.setMonth(dayVar[1]-1);
+
         eventVar.set("dateAndTime", dateToAdd); 
+
         var fileUploadControl = $("#pic")[0];
         if (fileUploadControl.files.length > 0) {
           var file = fileUploadControl.files[0];
@@ -102,7 +107,7 @@
       <input type="time" name="date" required aria-required="true" id="time" class="login-input" />
       <label> Event Photo </label>
       <input type="file" placeholder="Event Picture" id="pic" accept="image/*" class="login-input">
-      <input type="submit" onclick="createEventTwo();" value="Create Account" class="login-submit">
+      <input type="submit" onclick="createEventTwo();" value="Create Event" class="login-submit">
 
       <p class="login-help"><a href="home.html">Back</a></p>
  </form>
@@ -112,6 +117,7 @@
        $(document).ready(function(){ 
         calendar.set("date");
     });
+
    </script>
 </body>
 </html>
