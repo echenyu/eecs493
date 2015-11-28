@@ -7,24 +7,31 @@ head, body {
   margin: auto;
   float: right;
   letter-spacing: 1px;
+
 }
 
 #nav ul {
+  background-color: white;
   list-style: none;
   width: 100%;
   margin: 0 auto;
+  font-size: 18px;
 }
 
+#logoNav li{
+  float:left;
+}
 #nav li {
   float: right; 
 }
 
 #nav li a {
+
   display: block;
   padding: 8px 15px;
   text-decoration: none;
   font-weight: bold;
-  color: #069;
+  color: white;
   border-right: 1px solid #ccc;
   transition: all 0.2s ease 0s;
 }
@@ -41,7 +48,6 @@ head, body {
   color: #c00;
   background-color: #fff; 
 }
-
 .center-content {
   margin: auto;
   width: 80%;
@@ -84,6 +90,7 @@ head, body {
   width: 162px;
 }
 
+
 a {
   color: black;
 }
@@ -108,6 +115,18 @@ input[type="submit"]:hover, input[type="button"]:hover {
   border: solid 2px #9CE62A;
 }
 
+input[type="file"] {
+  padding-top: 10px;
+}
+
+#eventtype {
+  color:white;
+}
+
 td {
   padding: 10px;
+}
+
+label {
+  color: white;
 }
