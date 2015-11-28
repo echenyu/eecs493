@@ -4,111 +4,114 @@
    <title>EveMt</title>
    <meta name="description" content="My Parse App" >
    <meta name="viewport" content="width=device-width">
+
    <link rel="stylesheet" href="css/base.css">
       <link rel="stylesheet" href="css/calendar.css">
+   <link rel="stylesheet" href="css/style.css">
+   <link rel ="text/javascript" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
+ 
 
-   <link rel ="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
-   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
    <script type="text/javascript" src="calendar.js"></script>
-     <script type="text/javascript">
+   <script type="text/javascript">
       function createEventTwo(){
+        event.preventDefault(); 
+        Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
         
-        var event = new Parse.Object("event");
-        event.set("Title", document.getElementById("event-name").value);
-        event.set("description", document.getElementById("description-val").value);
-        event.set("location", document.getElementById("location").value);
-        event.set("numGoing", 1);
-
+        var eventVar = new Parse.Object("event");
+        eventVar.set("Title", document.getElementById("event-name").value);
+        eventVar.set("description", document.getElementById("description-val").value);
+        eventVar.set("location", document.getElementById("location").value);
+        eventVar.set("numGoing", 1);
         var form = document.getElementById("eventtype");
-
         if($('input[name="eventtype"]:checked').val() == "Private"){
-          event.set("private", true);
+          eventVar.set("private", true);
         }
-        else event.set("private", false);
-        event.set("date", document.getElementById("date").value + " " + document.getElementById("time").value);
-        event.save(null, {
-            success: function(event){
-              alert('new object created');
-            },
-            error: function(event,error){
-              alert('failed, ' + error.message);
-            }
-        });
+        else eventVar.set("private", false);
+    
+        var dateToAdd = new Date(); 
+        
+        //Setting up the time part of the variable
+        var time = document.getElementById("time").value;
+        var timeVar = time.split(':');  
+        dateToAdd.setHours(timeVar[0]); 
+        dateToAdd.setMinutes(timeVar[1]); 
+        //Setting up the day part of the variable
+        var day = document.getElementById("date").value;
+        var dayVar = day.split('-'); 
+        dateToAdd.setDate(dayVar[2]);
+        dateToAdd.setYear(dayVar[0]);
+        dateToAdd.setMonth(dayVar[1]-1);
+        eventVar.set("dateAndTime", dateToAdd); 
+        var fileUploadControl = $("#pic")[0];
+        if (fileUploadControl.files.length > 0) {
+          var file = fileUploadControl.files[0];
+          var name = document.getElementById("pic").value;
+          name = name.split('.').pop();
+          name = "photo." + name;  
+          console.log(name); 
+          var parseFile = new Parse.File(name, file);
+          parseFile.save().then(function() {
+            // The file has been saved to Parse.
+            eventVar.set("eventPhoto", parseFile); 
+            eventVar.save(null, {
+                success: function(event){
+                  alert('New Event Made!');
+                },
+                error: function(event,error){
+                  alert('failed, ' + error.message);
+                }
+            });
+          }, function(error) {
+            alert('Image could not be uploaded'); 
+            // The file either could not be read, or could not be saved to Parse.
+          });
+        }        
       } 
       
    </script>
    <header>
+      <div class = "logoClass"> 
+          <img src="images/logo.png" alt="EveMt">
+      </div>
       <div id="nav" style="position:absolute !important; top:0">
          <ul>
             <li><a href="createAccount.html">Sign Up</a></li>
             <li><a href="index.html">Log In</a></li>
             <li><a href="index.html">Home</a>
-            
+
          </ul>
       </div>
    </header>
 </head>
-<body>
-   <div style="position:relative; top:50px">
-      <div class="center-content">
-         <h1 id="title">eveMt</h1>
-         <div class="line"></div>
-         <div style="margin: auto; margin-top:30px; color: black">
-            <p class="description" style="font-size:40px; font-weight:bold; letter-spacing:1px">Create an Event</p>
-            <br>
-            <form name="registration">
-               <div class="row" style="font-size: 22px;">
-                  <div class="col-sm-4 col-sm-offset-2">
-                     <label for="first-name" style="font-weight:normal">Event Name</label>
-                     <br>
-                     <input id="event-name" maxlength="20" style="text-align: center; font-size:20px" type="text" name="event-name" size="20"/> <br> <br>
-                     <label for="last-name" style="font-weight:normal">Location</label>
-                     <br>  
-                     <input id="location" maxlength="20" style="text-align: center; font-size:20px" type="text" name="last-name" size="20" /> <br> <br>
-                     <label for="description" style="font-weight:normal">Description</label>
-                     <br>
-                     <input maxlength="20" style="text-align: center; font-size:20px" id="description-val" size="20"  /> <br><br>
-                  </div>
-                  <div class="col-sm-4">
-                     <label for="username" style="font-weight:normal">Public or Private?</label>
-                     <br>
-                     <form id="eventtype" action="">
-                    <input type="radio" name="eventtype" value="Public">Public<br>
-                    <input type="radio" name="eventtype" value="Private">Private
-                    </form>
-                                         
-                    <br><br>
-                    <label for="first-name" style="font-weight:normal">Date</label>
-                     <br> 
-                    <input type="text" name="date" id="date" />
-                    <br><br>
-                    <label for="first-name" style="font-weight:normal">Time</label>
-                     <br> 
-                    <input type="time" name="date" id="time" />
+<body background = "background.png">
+  <form class="login" id="eventtype" style="margin: 30px auto;">
+      <h1>EveMt</h1>
+      <input type="eventName" id="event-name" class="login-input" placeholder="Event Name*" autofocus required aria-required="true">
+      <input type="location" id="location" class="login-input" placeholder="Location*" required aria-required="true">
+      <input type="description" id="description-val" class="login-input" placeholder="Description*" id = "username-val" required aria-required="true">
+      <label for="username" style="font-weight:normal" >Public or Private?</label>
+      <br>
+      <form id="eventtype" action="">
+      <input type="radio" name="eventtype" value="Public">Public<br>
+      <input type="radio" name="eventtype" value="Private">Private
+      <br/><br/>
 
+      <input type="date" required aria-required="true" id="date" class = "login-input" placeholder="Date*"/>
+      <input type="time" name="date" required aria-required="true" id="time" class="login-input" />
+      <label> Event Photo </label>
+      <input type="file" placeholder="Event Picture" id="pic" accept="image/*" class="login-input">
+      <input type="submit" onclick="createEventTwo();" value="Create Account" class="login-submit">
 
-
-                     <br> <br>
-                  </div>
-               </div>
-               <input type="submit" onclick="createEventTwo();" value="Create Event" style="margin-top:20px; padding-left:20px; padding-right:20px; font-size: 18px"/>
-               <br><br>
-            </form>
-         </div>
-      </div>
-   </div>
-
-   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+      <p class="login-help"><a href="home.html">Back</a></p>
+ </form>
+  
+  
    <script type="text/javascript">
        $(document).ready(function(){ 
-
-   
-      Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
-      calendar.set("date");
+        calendar.set("date");
     });
-
    </script>
 </body>
 </html>
