@@ -15,9 +15,10 @@
    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
    <script type="text/javascript" src="calendar.js"></script>
    <script type="text/javascript">
+      Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
+
       function createEventTwo(){
         event.preventDefault(); 
-        Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
         
 
         var eventVar = new Parse.Object("event");
@@ -75,12 +76,11 @@
         }        
       } 
       
-   </script>
-   <script>
     function signOut() {
-        Parse.User.logOut();
-      }
-    </script>
+      Parse.User.logOut();
+    }
+   </script>
+
    <header>
       <div class = "logoClass"> 
           <img src="images/logo.png" alt="EveMt" style='width:13%'>

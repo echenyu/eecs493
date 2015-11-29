@@ -43,18 +43,18 @@
     </div>
 
  </header>
-  <script>
-    function signOut() {
-      ParseUser.getCurrentUser().logOut();
-    }
-  </script>
 
   <script>
+    Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
+
     var arrayOfEventID = []; 
     var carouselCount = 0; 
     var maxCount; 
+
+    function signOut() {
+      Parse.User.logOut();
+    }
     function loadPictures() {
-      Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
       var event = Parse.Object.extend("event");
       var query = new Parse.Query(event);
       var myEvents = Parse.User.current().get("myEvents");  
