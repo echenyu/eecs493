@@ -10,12 +10,13 @@
   <link rel="stylesheet" href="css/eventStyle.css">
   <header>
       <div class = "logoClass"> 
-          <img src="images/logo.png" alt="EveMt" style='width:13%'>
+          <img src="images/logo.png" alt="EveMt" style='width:13%; padding-bottom:50px;'>
       </div>
       
       <div id="nav" style="position:absolute !important; top:0">
          <ul>
-            <li class="navbar"><a href="createAccount.html">Sign Out</a></li>
+            <li class="navbar"><a href="index.html" id="signout">Sign Out</a></li>
+            <li ><a href="createEvent.html">Create Event</a>
             <li ><a href="index.html">Home</a>
          </ul>
       </div>
@@ -24,7 +25,6 @@
 </head>
 
 <body background="background.png">
-
 
   <div>
   	<table id="mainList">
@@ -49,19 +49,26 @@
       console.log(events[id]);
     });
 
-  	function loadLandingPage() {
-  	  var event = Parse.Object.extend("event");
-  	  var query = new Parse.Query(event);
-  	  var addElements = "";
-  	  
-  	  query.equalTo("private", false);
-  	  query.find({
-  	  	success: function(results) {
-   			console.log("Successfully retrieved " + results.length + " public events.");
-  	  		for (var i = 0; i < results.length; i++) {
-  	  			var object = results[i];
+    function signOut() {
+      Parse.User.logOut();
+    }
 
-  	  			var eventPhoto = object.get('eventPhoto');
+    var signOutEvent = document.getElementById("signout");
+    signOutEvent.onclick = signOut;
+
+
+  	function loadLandingPage() {
+      var myevents = Parse.User.current().get("myEvents");
+      var addElements = "";
+      for (var i = 0; i < myevents.length; i++) {
+        var event = Parse.Object.extend("event");
+        var query = new Parse.Query(event);
+        query.equalTo("objectId", myevents[i]);
+        query.find({
+          success: function(results) {
+            var object = results[0];
+
+            var eventPhoto = object.get('eventPhoto');
             var eventPhotoURL;
             if (eventPhoto == null) eventPhotoURL = "images/logo.png";
             else eventPhotoURL = eventPhoto.url();
@@ -82,24 +89,26 @@
             if (object.get('dateAndTime') == null) eventDateAndTime = "Event Date and Time Unavailable";
             else eventDateAndTime = object.get('dateAndTime').toString().substring(0,21); 
 
-            events[i] = object.id;
-  	  			addElements += "<tr id=" + i.toString() + ">" 
+            console.log(eventTitle);
+            addElements += "<tr id=" + i.toString() + " >" 
                          + "<td> <img src=" + eventPhotoURL + " style='width:500px; height:209px;'> </td>" 
                               + "<td>" 
                               + "<li class='boxedentry' style='height:20px;width:380px'>" + eventTitle + "</li>"
                               + "<li class='boxedentry' style='height:80px;'>" + eventDescription + "</li>"
                               + "<li class='entry'>" + eventLocation + " "  + eventDateAndTime + "</li>"
-                              + "<button id='going'> Going </button>"
                               + "<button id='notgoing'> Not Going </button>"
                             + "</td>"
                          + "</tr>"
-  	  		}
-  	  		document.getElementById("mainList").innerHTML = addElements;
-  	  	},
-  	  	error: function(error) {
-  	        console.log("Error: " + error.code + " " + error.message);
-  	  	}
-  	  });
+            document.getElementById("mainList").innerHTML = addElements;
+
+          },
+          error: function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+          }
+        });
+      }
+      document.getElementById("mainList").innerHTML = addElements;
+
   	}
   </script>
 </body>

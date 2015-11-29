@@ -41,11 +41,11 @@ head, body {
 }
 
 #nav li a:hover {
-  color: #9CE62A !important;
+  color: #0101DF !important;
 }
 
 #nav li a:hover {
-  color: #c00;
+  color: #0101DF;
   background-color: #fff; 
 }
 .center-content {
@@ -111,8 +111,8 @@ input[type="submit"], input[type="button"] {
 }
 
 input[type="submit"]:hover, input[type="button"]:hover {
-  color:  #9CE62A;
-  border: solid 2px #9CE62A;
+  color:  #0101DF;
+  border: solid 2px #0101DF;
 }
 
 input[type="file"] {

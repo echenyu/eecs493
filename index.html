@@ -27,6 +27,7 @@
           },
           error: function(user,error){
             console.log("Error: " + error.code + " " + error.message);
+            document.getElementById("invalid-login").innerHTML = "Invalid Login Credentials!";
           }
         });
       }
@@ -49,6 +50,7 @@
     <input type="email" name="email" class="login-input" placeholder="Email Address" id="username-val" autofocus required aria-required="true" >
     <input type="password" name="password" class="login-input" placeholder="Password" id="password-val" required aria-required="true" >
     <input type="submit" value="Login" class="login-submit" onclick="signUp();">
+    <h1 id="invalid-login"> </h1>
     <p class="login-help"><a href="createAccount.html">Create Account</a></p>
   </form>
 
