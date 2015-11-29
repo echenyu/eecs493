@@ -152,7 +152,16 @@
               // Insert the .item div into the .carousel-inner div
               $(".carousel-inner").append(itemDivHtml);
             }
-            maxCount--; 
+            // If there's nothing in the carousel, make a default image
+            if(maxCount == 0) {
+              var imgHtml =  "<img/src = images/empty.jpg style='width:1000px; height:450px';>";
+              var captionHtml = "<div class = 'carousel-caption'> <h2 style = 'margin-bottom:160px'> There are no more events to browse! :) </h2>";
+              var totalHtml = imgHtml + captionHtml;
+              var itemDivHtml = $("<div class = 'item active'/>").append(totalHtml); 
+              $(".carousel-inner").append(itemDivHtml);
+            } else {
+              maxCount--; 
+            }
           }, error: function(error) {
                 console.log("Error: " + error.code + " " + error.message);
             }
@@ -187,8 +196,6 @@
             alert('Image could not be uploaded'); 
             // The file either could not be read, or could not be saved to Parse.
       });
-      
-      
     }
 
     function increment() {
