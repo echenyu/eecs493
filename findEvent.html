@@ -43,115 +43,152 @@
     </div>
 
  </header>
-
   <script>
-    Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
-
-    var arrayOfEventID = []; 
-    var carouselCount = 0; 
-    var maxCount; 
 
     function signOut() {
+      Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
       Parse.User.logOut();
     }
+  </script>
+
+  <script>
+    var arrayOfEventID = []; 
+    var carouselCount = 0; 
+    var maxCount = 0; 
     function loadPictures() {
-      var event = Parse.Object.extend("event");
-      var query = new Parse.Query(event);
-      var myEvents = Parse.User.current().get("myEvents");  
-      console.log(myEvents); 
+      Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
 
-      query.equalTo("private", false);
-      query.find({
-        success: function(results) {
-        console.log("Successfully retrieved " + results.length + " public events.");
-        var active; 
-        maxCount = results.length-1; 
-        for(var i = 0; i < results.length; i++) {
+      var user = Parse.User.current();
+      user.fetch({
+        success:function(user) {
+          var event = Parse.Object.extend("event");
+          var query = new Parse.Query(event);
+          var myEvents = Parse.User.current().get("myEvents");  
+          var falseEvents = Parse.User.current().get("notGoing"); 
+          var firstValue = true; 
+          console.log(falseEvents + " is the false ones"); 
+          console.log(myEvents + " is our existing ones"); 
 
-          if (i == 0)
-              active = " active";
-         else
-             active = '';
-          var object = results[i];
+          query.equalTo("private", false);
+          query.find({
+            success: function(results) {
+            console.log("Successfully retrieved " + results.length + " public events.");
+            var active; 
+            for(var i = 0; i < results.length; i++) {
+              console.log("Starting here"); 
+              
+              var object = results[i];
+              var eventID; 
+              eventID = object.id;
 
-          var eventID; 
-          eventID = object.id;
-
-          var exists = false; 
-          if(myEvents == null) {
-            console.log("hi"); 
-          } else {
-            console.log(eventID);
-            for(var j = 0; j < myEvents.length; j++) {
-              if(myEvents[j] == eventID) {
-                //exists = true;
+              var exists = false; 
+              if(myEvents == null) {
+                console.log("My events are null"); 
+              } else {
+                for(var j = 0; j < myEvents.length; j++) {
+                  if(myEvents[j] == eventID) {
+                    console.log(eventID + " was in myEvents"); 
+                    exists = true;
+                  }
+                } 
               }
-            } 
-          }
-          if(exists == true) {
-            console.log("Skip loop"); 
-            continue; 
-          }
-          console.log("Here");
-          arrayOfEventID.push(eventID); 
+              if(falseEvents == null) {
+                console.log("False Events is Null"); 
+              } else {
+                for(var j = 0; j < falseEvents.length; j++) {
+                  if(falseEvents[j] == eventID) {
+                    console.log(eventID + " was not in my Events"); 
+                    exists = true; 
+                  }
+                }
+              }
+              if(exists == true) {
+                console.log("It was true"); 
+                continue; 
+              }
+              if (firstValue) {
+                  active = " active";
+                  firstValue = false; 
+              }
+              else {
+                 active = '';
+               }
 
-          var eventPhoto = object.get('eventPhoto');
-          var eventPhotoURL;
-          if (eventPhoto == null) eventPhotoURL = "images/logo.png";
-          else eventPhotoURL = eventPhoto.url();
+              arrayOfEventID.push(eventID); 
+              maxCount++; 
 
-          var eventTitle;
-          if (object.get('Title') == null) eventTitle = "Event Title Unavailable";
-          else eventTitle = object.get('Title');
+              var eventPhoto = object.get('eventPhoto');
+              var eventPhotoURL;
+              if (eventPhoto == null) eventPhotoURL = "images/logo.png";
+              else eventPhotoURL = eventPhoto.url();
 
-          var eventDescription;
-          if (object.get('description') == null) eventDescription = "Event Description Unavailable";
-          else eventDescription = object.get('description');    
+              var eventTitle;
+              if (object.get('Title') == null) eventTitle = "Event Title Unavailable";
+              else eventTitle = object.get('Title');
 
-          var eventLocation;
-          if (object.get('location') == null) eventLocation = "Event Location Unavailable;";
-          else eventLocation = object.get('location') + " -";   
+              var eventDescription;
+              if (object.get('description') == null) eventDescription = "Event Description Unavailable";
+              else eventDescription = object.get('description');    
 
-          var eventDateAndTime;
-          if (object.get('dateAndTime') == null) eventDateAndTime = "Event Date and Time Unavailable";
-          else eventDateAndTime = object.get('dateAndTime').toString().substring(0,21); 
+              var eventLocation;
+              if (object.get('location') == null) eventLocation = "Event Location Unavailable;";
+              else eventLocation = object.get('location') + " -";   
 
-          // Create the img html and set the src attribute to our URL
-          var imgHtml =  "<img/src = " + eventPhotoURL + " style='width:1000px; filter:brightness(50%); height:450px';>" + "<div class='box'></div>"; 
-          
-          var captionHtml = "<div class= 'carousel-caption'> <h2 style='text-decoration:underline'> " + eventTitle + "</h2><br/> <br><h4>" 
-            + eventDescription + "</h4><h4>" + eventLocation + " " 
-            + eventDateAndTime + "</h4><button onclick = 'accepted(arrayOfEventID[carouselCount])' class='btn btn-default' id='going'> Going </button>" 
-            + "<button  class='btn btn-default' id='notgoing'> Not Going </button><br/><br><br>";
-          var totalHtml = imgHtml + captionHtml; 
+              var eventDateAndTime;
+              if (object.get('dateAndTime') == null) eventDateAndTime = "Event Date and Time Unavailable";
+              else eventDateAndTime = object.get('dateAndTime').toString().substring(0,21); 
 
-          // Create the .item div and insert the img html into it
-          var itemDivHtml = $("<div class='item" + active + "'/>").append(totalHtml);
-          // Insert the .item div into the .carousel-inner div
-          $(".carousel-inner").append(itemDivHtml);
-        }
-      }, error: function(error) {
-            console.log("Error: " + error.code + " " + error.message);
-        }
-      });
+              // Create the img html and set the src attribute to our URL
+              var imgHtml =  "<img/src = " + eventPhotoURL + " style='width:1000px; filter:brightness(50%); height:450px';>" + "<div class='box'></div>"; 
+              
+              var captionHtml = "<div class= 'carousel-caption'> <h2 style='text-decoration:underline'> " + eventTitle + "</h2><br/> <br><h4>" 
+                + eventDescription + "</h4><h4>" + eventLocation + " " 
+                + eventDateAndTime + "</h4><button onclick = 'accepted(arrayOfEventID[carouselCount])' class='btn btn-default' id='going'> Going </button>" 
+                + "<button onclick = 'rejected(arrayOfEventID[carouselCount])' class='btn btn-default' id='notgoing'> Not Going </button><br/><br><br>";
+              var totalHtml = imgHtml + captionHtml; 
 
-    }
+              // Create the .item div and insert the img html into it
+              var itemDivHtml = $("<div class='item" + active + "'/>").append(totalHtml);
+              // Insert the .item div into the .carousel-inner div
+              $(".carousel-inner").append(itemDivHtml);
+            }
+            maxCount--; 
+          }, error: function(error) {
+                console.log("Error: " + error.code + " " + error.message);
+            }
+          });
+    }, error: function(user, error) {
+      console.log("error"); 
+    }}); 
+}
 
     function accepted(eventID) {
-      console.log(arrayOfEventID);
-      console.log(eventID); 
       var user = Parse.User.current(); 
       var myEvents = user.get("myEvents"); 
       user.addUnique("myEvents", eventID); 
-      user.save(); 
-      myEvents = user.get("myEvents"); 
-      console.log(myEvents); 
-      Parse.User.current().fetch();
+      user.save().then(function() {
+            // The file has been saved to Parse.
+            location.reload();
+          }, function(error) {
+            alert('Image could not be uploaded'); 
+            // The file either could not be read, or could not be saved to Parse.
+      });
     }
 
     function rejected(eventID) {
+      var user = Parse.User.current(); 
+      var myEvents = user.get("notGoing");
+      console.log(myEvents); 
+      user.addUnique("notGoing", eventID);
+      user.save().then(function() {
+            // The file has been saved to Parse.
+            location.reload();
+          }, function(error) {
+            alert('Image could not be uploaded'); 
+            // The file either could not be read, or could not be saved to Parse.
+      });
       
-
+      
     }
 
     function increment() {
@@ -160,6 +197,7 @@
       } else {
         carouselCount++; 
       }
+      console.log(carouselCount + " after increase."); 
     }
     function decrement() {
       if(carouselCount == 0) {
@@ -167,6 +205,7 @@
       } else {
         carouselCount--;
       }
+      console.log(carouselCount + " after decrease."); 
     }
 
   </script>
@@ -175,7 +214,7 @@
 
 <div class="container">
   <br>
-  <div id="myCarousel" class="carousel slide" >
+  <div id="myCarousel" class="carousel slide" style="margin-top:50px">
     <!-- Indicators -->
    <!--  <ol class="carousel-indicators">
       <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
