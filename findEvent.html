@@ -35,14 +35,18 @@
     
     <div id="nav" style="position:absolute !important; top:0">
        <ul>
-          <li class="navbar"><a href="createAccount.html">Sign Out</a></li>
-          <li ><a href="index.html">Home</a>
+          <li class="navbar"><a href="index.html" id="signout" onclick = "signOut();">Sign Out</a></li>
+            <li ><a href="createEvent.html">Create Event</a>
+            <li> <a href="landingPage.html">My Events</a>
+            <li ><a href="findEvent.html">Home</a>
        </ul>
     </div>
 
  </header>
- <script>
-    
+  <script>
+    function signOut() {
+      ParseUser.getCurrentUser().logOut();
+    }
   </script>
 
   <script>

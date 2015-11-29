@@ -76,16 +76,21 @@
       } 
       
    </script>
+   <script>
+    function signOut() {
+        Parse.User.logOut();
+      }
+    </script>
    <header>
       <div class = "logoClass"> 
           <img src="images/logo.png" alt="EveMt" style='width:13%'>
       </div>
       <div id="nav" style="position:absolute !important; top:0">
          <ul>
-            <li><a href="createAccount.html">Sign Up</a></li>
-            <li><a href="index.html">Log In</a></li>
-            <li><a href="index.html">Home</a>
-
+            <li class="navbar"><a href="index.html" id="signout" onclick = "signOut();">Sign Out</a></li>
+            <li ><a href="createEvent.html">Create Event</a>
+            <li> <a href="landingPage.html">My Events</a>
+            <li ><a href="findEvent.html">Home</a>
          </ul>
       </div>
    </header>
