@@ -5,7 +5,6 @@
   <title>EveMt</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/calendar.css">
-   <link rel="stylesheet" href="css/style.css">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
   <link rel="stylesheet" href="css/eventStyle.css">
@@ -13,13 +12,14 @@
       <div class = "logoClass"> 
           <img src="images/logo.png" alt="EveMt" style='width:13%'>
       </div>
+      
       <div id="nav" style="position:absolute !important; top:0">
          <ul>
-            <li><a href="createAccount.html">Sign Out</a></li>
-            <li><a href="index.html">Home</a>
-
+            <li class="navbar"><a href="createAccount.html">Sign Out</a></li>
+            <li ><a href="index.html">Home</a>
          </ul>
       </div>
+  
    </header>
 </head>
 
@@ -83,9 +83,9 @@
             else eventDateAndTime = object.get('dateAndTime').toString().substring(0,21); 
 
             events[i] = object.id;
-  	  			addElements += "<tr id=" + i.toString() + " bgcolor='#294779'>" 
-                         + "<td> <img src=" + eventPhotoURL + " style='width:500px;height:209px;'> </td>" 
-                            + "<td>" 
+  	  			addElements += "<tr id=" + i.toString() + ">" 
+                         + "<td> <img src=" + eventPhotoURL + " style='width:500px; height:209px;'> </td>" 
+                              + "<td>" 
                               + "<li class='boxedentry' style='height:20px;width:380px'>" + eventTitle + "</li>"
                               + "<li class='boxedentry' style='height:80px;'>" + eventDescription + "</li>"
                               + "<li class='entry'>" + eventLocation + " "  + eventDateAndTime + "</li>"
