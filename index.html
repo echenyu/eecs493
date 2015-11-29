@@ -22,7 +22,7 @@
       
           success: function(user){
             //go to event page
-            window.location.href = "home.html";
+            window.location.href = "landingPage.html";
 
           },
           error: function(user,error){
@@ -35,7 +35,7 @@
       var currentUser = Parse.User.current();
       if (currentUser) {
           // do stuff with the user
-          window.location.href = "home.html";
+          window.location.href = "landingPage.html";
       } else {
           // show the signup or login page
 
