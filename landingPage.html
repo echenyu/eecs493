@@ -5,7 +5,6 @@
   <title>EveMt</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/calendar.css">
-    <link rel="stylesheet" href="css/style.css">
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
@@ -36,23 +35,37 @@
 
   <script type="text/javascript">
     Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
-    events = [];
+    var events = [];
 
   	window.onload = function() {
       Parse.User.current().fetch();
   	  loadLandingPage();
   	};
 
-    $(document).on('click', '#going', function() {
-      var id = $(this).closest('tr').attr('id');
-      console.log(events[id]);
-    });
-
     $(document).on('click', '#notgoing', function() {
       var id = $(this).closest('tr').attr('id');
       console.log(events[id]);
+      var user = Parse.User.current();
+      user.addUnique("notGoing", events[id]);
+      user.remove("myEvents", events[id]);
+      user.save().then(function() {
+        location.reload();
+      });
     });
-
+/*
+    function rejected(eventID) {
+      var user = Parse.User.current(); 
+      var myEvents = user.get("notGoing");
+      console.log(myEvents); 
+      user.addUnique("notGoing", eventID);
+      user.save().then(function() {
+            // The file has been saved to Parse.
+            location.reload();
+          }, function(error) {
+            alert('Image could not be uploaded'); 
+            // The file either could not be read, or could not be saved to Parse.
+      });
+*/
     function signOut() {
       Parse.User.logOut();
     }
@@ -60,14 +73,13 @@
     var signOutEvent = document.getElementById("signout");
     signOutEvent.onclick = signOut;
 
-
+    var counter = 0;
   	function loadLandingPage() {
       var user = Parse.User.current();
       user.fetch({
         success: function(user) {
           var myevents = Parse.User.current().get("myEvents");
           var addElements = "";
-          console.log(myevents.length);
           for (var i = 0; i < myevents.length; i++) {
             var event = Parse.Object.extend("event");
             var query = new Parse.Query(event);
@@ -97,8 +109,8 @@
                 if (object.get('dateAndTime') == null) eventDateAndTime = "Event Date and Time Unavailable";
                 else eventDateAndTime = object.get('dateAndTime').toString().substring(0,21); 
 
-                console.log(eventTitle);
-                addElements += "<tr id=" + i.toString() + " >" 
+                events[counter] = object.id;
+                addElements += "<tr id=" + counter.toString() + " >" 
                              + "<td> <img src=" + eventPhotoURL + " style='width:500px; height:209px;'> </td>" 
                                   + "<td>" 
                                   + "<li class='boxedentry' style='height:20px;width:380px'>" + eventTitle + "</li>"
@@ -107,6 +119,7 @@
                                   + "<button id='notgoing'> Not Going </button>"
                                 + "</td>"
                              + "</tr>"
+                counter += 1;
                 document.getElementById("mainList").innerHTML = addElements;
 
               },
