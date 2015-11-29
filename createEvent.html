@@ -63,6 +63,9 @@
             eventVar.set("eventPhoto", parseFile); 
             eventVar.save(null, {
                 success: function(event){
+                  console.log(eventVar.id);
+                  Parse.User.current().addUnique("myEvents", eventVar.id);
+                  Parse.User.current().save()
                   alert('New Event Made!');
                 },
                 error: function(event,error){

@@ -5,6 +5,8 @@
   <title>EveMt</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/calendar.css">
+    <link rel="stylesheet" href="css/style.css">
+
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
   <link rel="stylesheet" href="css/eventStyle.css">
@@ -37,6 +39,7 @@
     events = [];
 
   	window.onload = function() {
+      Parse.User.current().fetch();
   	  loadLandingPage();
   	};
 
@@ -59,56 +62,66 @@
 
 
   	function loadLandingPage() {
-      var myevents = Parse.User.current().get("myEvents");
-      var addElements = "";
-      for (var i = 0; i < myevents.length; i++) {
-        var event = Parse.Object.extend("event");
-        var query = new Parse.Query(event);
-        query.equalTo("objectId", myevents[i]);
-        query.find({
-          success: function(results) {
-            var object = results[0];
+      var user = Parse.User.current();
+      user.fetch({
+        success: function(user) {
+          var myevents = Parse.User.current().get("myEvents");
+          var addElements = "";
+          console.log(myevents.length);
+          for (var i = 0; i < myevents.length; i++) {
+            var event = Parse.Object.extend("event");
+            var query = new Parse.Query(event);
+            query.equalTo("objectId", myevents[i]);
+            query.find({
+              success: function(results) {
+                var object = results[0];
 
-            var eventPhoto = object.get('eventPhoto');
-            var eventPhotoURL;
-            if (eventPhoto == null) eventPhotoURL = "images/logo.png";
-            else eventPhotoURL = eventPhoto.url();
+                var eventPhoto = object.get('eventPhoto');
+                var eventPhotoURL;
+                if (eventPhoto == null) eventPhotoURL = "images/logo.png";
+                else eventPhotoURL = eventPhoto.url();
 
-            var eventTitle;
-            if (object.get('Title') == null) eventTitle = "Event Title Unavailable";
-            else eventTitle = object.get('Title');
+                var eventTitle;
+                if (object.get('Title') == null) eventTitle = "Event Title Unavailable";
+                else eventTitle = object.get('Title');
 
-            var eventDescription;
-            if (object.get('description') == null) eventDescription = "Event Description Unavailable";
-            else eventDescription = object.get('description');    
+                var eventDescription;
+                if (object.get('description') == null) eventDescription = "Event Description Unavailable";
+                else eventDescription = object.get('description');    
 
-            var eventLocation;
-            if (object.get('location') == null) eventLocation = "Event Location Unavailable;";
-            else eventLocation = object.get('location') + ";";   
+                var eventLocation;
+                if (object.get('location') == null) eventLocation = "Event Location Unavailable;";
+                else eventLocation = object.get('location') + ";";   
 
-            var eventDateAndTime;
-            if (object.get('dateAndTime') == null) eventDateAndTime = "Event Date and Time Unavailable";
-            else eventDateAndTime = object.get('dateAndTime').toString().substring(0,21); 
+                var eventDateAndTime;
+                if (object.get('dateAndTime') == null) eventDateAndTime = "Event Date and Time Unavailable";
+                else eventDateAndTime = object.get('dateAndTime').toString().substring(0,21); 
 
-            console.log(eventTitle);
-            addElements += "<tr id=" + i.toString() + " >" 
-                         + "<td> <img src=" + eventPhotoURL + " style='width:500px; height:209px;'> </td>" 
-                              + "<td>" 
-                              + "<li class='boxedentry' style='height:20px;width:380px'>" + eventTitle + "</li>"
-                              + "<li class='boxedentry' style='height:80px;'>" + eventDescription + "</li>"
-                              + "<li class='entry'>" + eventLocation + " "  + eventDateAndTime + "</li>"
-                              + "<button id='notgoing'> Not Going </button>"
-                            + "</td>"
-                         + "</tr>"
-            document.getElementById("mainList").innerHTML = addElements;
+                console.log(eventTitle);
+                addElements += "<tr id=" + i.toString() + " >" 
+                             + "<td> <img src=" + eventPhotoURL + " style='width:500px; height:209px;'> </td>" 
+                                  + "<td>" 
+                                  + "<li class='boxedentry' style='height:20px;width:380px'>" + eventTitle + "</li>"
+                                  + "<li class='boxedentry' style='height:80px;'>" + eventDescription + "</li>"
+                                  + "<li class='entry'>" + eventLocation + " "  + eventDateAndTime + "</li>"
+                                  + "<button id='notgoing'> Not Going </button>"
+                                + "</td>"
+                             + "</tr>"
+                document.getElementById("mainList").innerHTML = addElements;
 
-          },
-          error: function(error) {
-            console.log("Error: " + error.code + " " + error.message);
+              },
+              error: function(error) {
+                console.log("Error: " + error.code + " " + error.message);
+              }
+            });
           }
-        });
-      }
-      document.getElementById("mainList").innerHTML = addElements;
+          document.getElementById("mainList").innerHTML = addElements;
+
+        },
+        error: function(user, error) {
+
+        }
+      });
 
   	}
   </script>

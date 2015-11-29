@@ -23,6 +23,7 @@
           user.set("password", document.getElementById("password-val").value);
           user.set("email", document.getElementById("username-val").value);
           user.set("myEvents", []);
+          user.set("notGoing", []);
           user.signUp(null, {
             success: function(user){
               //go to event page
