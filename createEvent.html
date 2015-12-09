@@ -67,6 +67,7 @@
                   Parse.User.current().addUnique("myEvents", eventVar.id);
                   Parse.User.current().save()
                   alert('New Event Made!');
+                  window.location.href = "findEvent.html";
                 },
                 error: function(event,error){
                   alert('failed, ' + error.message);
