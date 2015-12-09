@@ -2,59 +2,61 @@
 <!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en">
+<!--<![endif]-->
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>EveMt Create Account</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
-  <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  <script type="text/javascript">
-      function signUp(){
-        if (document.getElementById("first-val").value == "" || document.getElementById("last-val").value == "") {
-          document.getElementById('invalid-signup').innerHTML = "First and Last Name required!"
-          return;
-        }
-        if (passwordChecker()) {
-          event.preventDefault(); 
-          var user = new Parse.User();
-          user.set("Friends", []);
-          user.set("username", document.getElementById("username-val").value);
-          user.set("password", document.getElementById("password-val").value);
-          user.set("email", document.getElementById("username-val").value);
-          user.set("myEvents", []);
-          user.set("notGoing", []);
-          user.signUp(null, {
-            success: function(user){
-              //go to event page
-              console.log("Success"); 
-              window.location.href = "findEvent.html";
-            },
-            error: function(user,error){
-              alert("Error: " + error.code + " " + error.message);
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>EveMt Create Account</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+    <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <script type="text/javascript">
+        function signUp() {
+            if (document.getElementById("first-val").value == "" || document.getElementById("last-val").value == "") {
+                document.getElementById('invalid-signup').innerHTML = "First and Last Name required!"
+                return;
             }
-          });        
+            if (passwordChecker()) {
+                event.preventDefault();
+                var user = new Parse.User();
+                user.set("Friends", []);
+                user.set("username", document.getElementById("username-val").value);
+                user.set("password", document.getElementById("password-val").value);
+                user.set("email", document.getElementById("username-val").value);
+                user.set("myEvents", []);
+                user.set("notGoing", []);
+                user.signUp(null, {
+                    success: function(user) {
+                        //go to event page
+                        console.log("Success");
+                        window.location.href = "findEvent.html";
+                    },
+                    error: function(user, error) {
+                        alert("Error: " + error.code + " " + error.message);
+                    }
+                });
+            } else {
+                //passwords are not the same
+                console.log("meow");
+                document.getElementById('invalid-signup').innerHTML = "Passwords Do Not Match!"
+            }
         }
-        else {
-          //passwords are not the same
-          console.log("meow");
-          document.getElementById('invalid-signup').innerHTML = "Passwords Do Not Match!"
-        }
-      } 
-      
-   </script>
+    </script>
 </head>
+
 <body background="background.png">
-  <form class="login">
-    <h1>EveMt</h1>
-    <input type="firstname" name="firstname" class="login-input" placeholder="First Name" id = "first-val" autofocus aria-required="true">
-    <input type="lastname" name="lastname" class="login-input" placeholder="Last Name" id = "last-val" aria-required="true">
-    <input type="email" name="email" class="login-input" placeholder="Email (Username)" id = "username-val" required aria-required="true" pattern="^[a-zA-Z0-9_]{3,}$">
-    <input type="password" name="password" class="login-input" placeholder="Password" id = "password-val" required aria-required="true" pattern="(?=^.{5,15}$)(?=.*\d)(?=.*[a-z])(?!.*\s).*$">
-    <input type="password" name="confirm password" class="login-input" placeholder="Re-Enter Password"  id = "reenterpassword-val"required aria-required="true" pattern="(?=^.{5,15}$)(?=.*\d)(?=.*[a-z])(?!.*\s).*$">
-    <input type="submit" onclick="signUp();" value="Create Account" class="login-submit">
-    <h1 id='invalid-signup'> <h1>
+    <form class="login">
+        <h1>EveMt</h1>
+        <input type="firstname" name="firstname" class="login-input" placeholder="First Name" id="first-val" autofocus aria-required="true">
+        <input type="lastname" name="lastname" class="login-input" placeholder="Last Name" id="last-val" aria-required="true">
+        <input type="email" name="email" class="login-input" placeholder="Email (Username)" id="username-val" required aria-required="true" pattern="^[a-zA-Z0-9_]{3,}$">
+        <input type="password" name="password" class="login-input" placeholder="Password" id="password-val" required aria-required="true" pattern="(?=^.{5,15}$)(?=.*\d)(?=.*[a-z])(?!.*\s).*$">
+        <input type="password" name="confirm password" class="login-input" placeholder="Re-Enter Password" id="reenterpassword-val" required aria-required="true" pattern="(?=^.{5,15}$)(?=.*\d)(?=.*[a-z])(?!.*\s).*$">
+        <input type="submit" onclick="signUp();" value="Create Account" class="login-submit">
+        <h1 id='invalid-signup'> <h1>
     <p class="login-help"><a href="index.html">Back</a></p>
   </form>
 

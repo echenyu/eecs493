@@ -1,254 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title>eveMt</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/base.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
-  <style>
-  .carousel-inner > .item > img,
-  .carousel-inner > .item > a > img {
-      width: 70%;
-      margin: auto;
-  }
-  </style>
+    <title>eveMt</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/base.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+    <style>
+        .carousel-inner > .item > img,
+        .carousel-inner > .item > a > img {
+            width: 70%;
+            margin: auto;
+        }
+    </style>
 
-  <style>
-  .box{
-    width:300px;
-    height:300px;
-    position:absolute;
-    z-index:10;
-    background:rgba(68,68,67,.8);
-  }
-  </style>
+    <style>
+        .box {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            z-index: 10;
+            background: rgba(68, 68, 67, .8);
+        }
+    </style>
 
-  <header>
-    <div class = "logoClass"> 
-        <img src="images/logo.png" alt="EveMt" style='width:13%'>
-    </div>
-    
-    <div id="nav" style="position:absolute !important; top:0">
-       <ul>
-          <li class="navbar"><a href="index.html" id="signout" onclick = "signOut();">Sign Out</a></li>
-            <li ><a href="createEvent.html">Create Event</a>
-            <li> <a href="landingPage.html">Events</a>
-            <li ><a href="addFriend.html">Add Friends</a>
-            <li ><a href="findEvent.html">Event Feed</a>
-       </ul>
-    </div>
+    <header>
+        <div class="logoClass">
+            <img src="images/logo.png" alt="EveMt" style='width:13%'>
+        </div>
 
- </header>
-  <script>
+        <div id="nav" style="position:absolute !important; top:0">
+            <ul>
+                <li class="navbar"><a href="index.html" id="signout" onclick="signOut();">Sign Out</a>
+                </li>
+                <li><a href="createEvent.html">Create Event</a>
+                    <li> <a href="landingPage.html">Events</a>
+                        <li><a href="addFriend.html">Add Friends</a>
+                            <li><a href="findEvent.html">Event Feed</a>
+            </ul>
+        </div>
 
-    function signOut() {
-      Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
-      Parse.User.logOut();
-    }
-  </script>
+    </header>
+    <script>
+        function signOut() {
+            Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
+            Parse.User.logOut();
+        }
+    </script>
 
-  <script>
-    var arrayOfEventID = []; 
-    var carouselCount = 0; 
-    var maxCount = 0; 
-    function loadPictures() {
-      Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
+    <script>
+        var arrayOfEventID = [];
+        var carouselCount = 0;
+        var maxCount = 0;
 
-      var user = Parse.User.current();
-      user.fetch({
-        success:function(user) {
-          var event = Parse.Object.extend("event");
-          var query = new Parse.Query(event);
-          var myEvents = Parse.User.current().get("myEvents");  
-          var falseEvents = Parse.User.current().get("notGoing"); 
-          var firstValue = true; 
-          console.log(falseEvents + " is the false ones"); 
-          console.log(myEvents + " is our existing ones"); 
+        function loadPictures() {
+            Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
 
-          query.equalTo("private", false);
-          query.find({
-            success: function(results) {
-            console.log("Successfully retrieved " + results.length + " public events.");
-            var active; 
-            for(var i = 0; i < results.length; i++) {
-              console.log("Starting here"); 
-              
-              var object = results[i];
-              var eventID; 
-              eventID = object.id;
+            var user = Parse.User.current();
+            user.fetch({
+                success: function(user) {
+                    var event = Parse.Object.extend("event");
+                    var query = new Parse.Query(event);
+                    var myEvents = Parse.User.current().get("myEvents");
+                    var falseEvents = Parse.User.current().get("notGoing");
+                    var firstValue = true;
+                    console.log(falseEvents + " is the false ones");
+                    console.log(myEvents + " is our existing ones");
 
-              var exists = false; 
-              if(myEvents == null) {
-                console.log("My events are null"); 
-              } else {
-                for(var j = 0; j < myEvents.length; j++) {
-                  if(myEvents[j] == eventID) {
-                    console.log(eventID + " was in myEvents"); 
-                    exists = true;
-                  }
-                } 
-              }
-              if(falseEvents == null) {
-                console.log("False Events is Null"); 
-              } else {
-                for(var j = 0; j < falseEvents.length; j++) {
-                  if(falseEvents[j] == eventID) {
-                    console.log(eventID + " was not in my Events"); 
-                    exists = true; 
-                  }
+                    query.equalTo("private", false);
+                    query.find({
+                        success: function(results) {
+                            console.log("Successfully retrieved " + results.length + " public events.");
+                            var active;
+                            for (var i = 0; i < results.length; i++) {
+                                console.log("Starting here");
+
+                                var object = results[i];
+                                var eventID;
+                                eventID = object.id;
+
+                                var exists = false;
+                                if (myEvents == null) {
+                                    console.log("My events are null");
+                                } else {
+                                    for (var j = 0; j < myEvents.length; j++) {
+                                        if (myEvents[j] == eventID) {
+                                            console.log(eventID + " was in myEvents");
+                                            exists = true;
+                                        }
+                                    }
+                                }
+                                if (falseEvents == null) {
+                                    console.log("False Events is Null");
+                                } else {
+                                    for (var j = 0; j < falseEvents.length; j++) {
+                                        if (falseEvents[j] == eventID) {
+                                            console.log(eventID + " was not in my Events");
+                                            exists = true;
+                                        }
+                                    }
+                                }
+                                if (exists == true) {
+                                    console.log("It was true");
+                                    continue;
+                                }
+                                if (firstValue) {
+                                    active = " active";
+                                    firstValue = false;
+                                } else {
+                                    active = '';
+                                }
+
+                                arrayOfEventID.push(eventID);
+                                maxCount++;
+
+                                var eventPhoto = object.get('eventPhoto');
+                                var eventPhotoURL;
+                                if (eventPhoto == null) eventPhotoURL = "images/logo.png";
+                                else eventPhotoURL = eventPhoto.url();
+
+                                var eventTitle;
+                                if (object.get('Title') == null) eventTitle = "Event Title Unavailable";
+                                else eventTitle = object.get('Title');
+
+                                var eventDescription;
+                                if (object.get('description') == null) eventDescription = "Event Description Unavailable";
+                                else eventDescription = object.get('description');
+
+                                var eventLocation;
+                                if (object.get('location') == null) eventLocation = "Event Location Unavailable;";
+                                else eventLocation = object.get('location') + " -";
+
+                                var eventDateAndTime;
+                                if (object.get('dateAndTime') == null) eventDateAndTime = "Event Date and Time Unavailable";
+                                else eventDateAndTime = object.get('dateAndTime').toString().substring(0, 21);
+
+                                // Create the img html and set the src attribute to our URL
+                                var imgHtml = "<img/src = " + eventPhotoURL + " style='width:1000px; filter:brightness(50%); height:450px';>" + "<div class='box'></div>";
+
+                                var captionHtml = "<div class= 'carousel-caption'> <h2 style='text-decoration:underline'> " + eventTitle + "</h2><br/> <br><h4>" + eventDescription + "</h4><h4>" + eventLocation + " " + eventDateAndTime + "</h4><button onclick = 'accepted(arrayOfEventID[carouselCount])' class='btn btn-default' id='going'> Going </button>" + "<button onclick = 'rejected(arrayOfEventID[carouselCount])' class='btn btn-default' id='notgoing'> Not Going </button><br/><br><br>";
+                                var totalHtml = imgHtml + captionHtml;
+
+                                // Create the .item div and insert the img html into it
+                                var itemDivHtml = $("<div class='item" + active + "'/>").append(totalHtml);
+                                // Insert the .item div into the .carousel-inner div
+                                $(".carousel-inner").append(itemDivHtml);
+                            }
+                            // If there's nothing in the carousel, make a default image
+                            if (maxCount == 0) {
+                                var imgHtml = "<img/src = images/empty.jpg style='width:1000px; height:450px';>";
+                                var captionHtml = "<div class = 'carousel-caption'> <h2 style = 'margin-bottom:160px'> There are no more events to browse! :) </h2>";
+                                var totalHtml = imgHtml + captionHtml;
+                                var itemDivHtml = $("<div class = 'item active'/>").append(totalHtml);
+                                $(".carousel-inner").append(itemDivHtml);
+                            } else {
+                                maxCount--;
+                            }
+                        },
+                        error: function(error) {
+                            console.log("Error: " + error.code + " " + error.message);
+                        }
+                    });
+                },
+                error: function(user, error) {
+                    console.log("error");
                 }
-              }
-              if(exists == true) {
-                console.log("It was true"); 
-                continue; 
-              }
-              if (firstValue) {
-                  active = " active";
-                  firstValue = false; 
-              }
-              else {
-                 active = '';
-               }
+            });
+        }
 
-              arrayOfEventID.push(eventID); 
-              maxCount++; 
+        function accepted(eventID) {
+            var user = Parse.User.current();
+            var myEvents = user.get("myEvents");
+            user.addUnique("myEvents", eventID);
+            user.save().then(function() {
+                // The file has been saved to Parse.
+                location.reload();
+            }, function(error) {
+                alert('Image could not be uploaded');
+                // The file either could not be read, or could not be saved to Parse.
+            });
+        }
 
-              var eventPhoto = object.get('eventPhoto');
-              var eventPhotoURL;
-              if (eventPhoto == null) eventPhotoURL = "images/logo.png";
-              else eventPhotoURL = eventPhoto.url();
+        function rejected(eventID) {
+            var user = Parse.User.current();
+            var myEvents = user.get("notGoing");
+            console.log(myEvents);
+            user.addUnique("notGoing", eventID);
+            user.save().then(function() {
+                // The file has been saved to Parse.
+                location.reload();
+            }, function(error) {
+                alert('Image could not be uploaded');
+                // The file either could not be read, or could not be saved to Parse.
+            });
+        }
 
-              var eventTitle;
-              if (object.get('Title') == null) eventTitle = "Event Title Unavailable";
-              else eventTitle = object.get('Title');
-
-              var eventDescription;
-              if (object.get('description') == null) eventDescription = "Event Description Unavailable";
-              else eventDescription = object.get('description');    
-
-              var eventLocation;
-              if (object.get('location') == null) eventLocation = "Event Location Unavailable;";
-              else eventLocation = object.get('location') + " -";   
-
-              var eventDateAndTime;
-              if (object.get('dateAndTime') == null) eventDateAndTime = "Event Date and Time Unavailable";
-              else eventDateAndTime = object.get('dateAndTime').toString().substring(0,21); 
-
-              // Create the img html and set the src attribute to our URL
-              var imgHtml =  "<img/src = " + eventPhotoURL + " style='width:1000px; filter:brightness(50%); height:450px';>" + "<div class='box'></div>"; 
-              
-              var captionHtml = "<div class= 'carousel-caption'> <h2 style='text-decoration:underline'> " + eventTitle + "</h2><br/> <br><h4>" 
-                + eventDescription + "</h4><h4>" + eventLocation + " " 
-                + eventDateAndTime + "</h4><button onclick = 'accepted(arrayOfEventID[carouselCount])' class='btn btn-default' id='going'> Going </button>" 
-                + "<button onclick = 'rejected(arrayOfEventID[carouselCount])' class='btn btn-default' id='notgoing'> Not Going </button><br/><br><br>";
-              var totalHtml = imgHtml + captionHtml; 
-
-              // Create the .item div and insert the img html into it
-              var itemDivHtml = $("<div class='item" + active + "'/>").append(totalHtml);
-              // Insert the .item div into the .carousel-inner div
-              $(".carousel-inner").append(itemDivHtml);
-            }
-            // If there's nothing in the carousel, make a default image
-            if(maxCount == 0) {
-              var imgHtml =  "<img/src = images/empty.jpg style='width:1000px; height:450px';>";
-              var captionHtml = "<div class = 'carousel-caption'> <h2 style = 'margin-bottom:160px'> There are no more events to browse! :) </h2>";
-              var totalHtml = imgHtml + captionHtml;
-              var itemDivHtml = $("<div class = 'item active'/>").append(totalHtml); 
-              $(".carousel-inner").append(itemDivHtml);
+        function increment() {
+            if (carouselCount == maxCount) {
+                carouselCount = 0;
             } else {
-              maxCount--; 
+                carouselCount++;
             }
-          }, error: function(error) {
-                console.log("Error: " + error.code + " " + error.message);
+            console.log(carouselCount + " after increase.");
+        }
+
+        function decrement() {
+            if (carouselCount == 0) {
+                carouselCount = maxCount;
+            } else {
+                carouselCount--;
             }
-          });
-    }, error: function(user, error) {
-      console.log("error"); 
-    }}); 
-}
-
-    function accepted(eventID) {
-      var user = Parse.User.current(); 
-      var myEvents = user.get("myEvents"); 
-      user.addUnique("myEvents", eventID); 
-      user.save().then(function() {
-            // The file has been saved to Parse.
-            location.reload();
-          }, function(error) {
-            alert('Image could not be uploaded'); 
-            // The file either could not be read, or could not be saved to Parse.
-      });
-    }
-
-    function rejected(eventID) {
-      var user = Parse.User.current(); 
-      var myEvents = user.get("notGoing");
-      console.log(myEvents); 
-      user.addUnique("notGoing", eventID);
-      user.save().then(function() {
-            // The file has been saved to Parse.
-            location.reload();
-          }, function(error) {
-            alert('Image could not be uploaded'); 
-            // The file either could not be read, or could not be saved to Parse.
-      });
-    }
-
-    function increment() {
-      if(carouselCount == maxCount) {
-        carouselCount = 0;
-      } else {
-        carouselCount++; 
-      }
-      console.log(carouselCount + " after increase."); 
-    }
-    function decrement() {
-      if(carouselCount == 0) {
-        carouselCount = maxCount; 
-      } else {
-        carouselCount--;
-      }
-      console.log(carouselCount + " after decrease."); 
-    }
-
-  </script>
+            console.log(carouselCount + " after decrease.");
+        }
+    </script>
 </head>
-<body onload = "loadPictures();" background = "background.png">
 
-<div class="container">
-  <br>
-  <div id="myCarousel" class="carousel slide" style="margin-top:50px">
-    <!-- Indicators -->
-   <!--  <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-      <li data-target="#myCarousel" data-slide-to="3"></li>
-    </ol> -->
+<body onload="loadPictures();" background="background.png">
 
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner" role="listbox">
-  
+    <div class="container">
+        <br>
+        <div id="myCarousel" class="carousel slide" style="margin-top:50px">
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+
+            </div>
+
+            <!-- Left and right controls -->
+            <a class="left carousel-control" onclick="decrement();" href="#myCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" onclick="increment();" href="#myCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
     </div>
-
-    <!-- Left and right controls -->
-    <a class="left carousel-control" onclick = "decrement();" 
-      href="#myCarousel" role="button" data-slide="prev">
-      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" onclick = "increment();" 
-          href="#myCarousel" role="button" data-slide="next">
-      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
-</div>
 
 </body>
+
 </html>
