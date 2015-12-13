@@ -18,7 +18,19 @@
 
         function createEventTwo() {
             event.preventDefault();
-
+            if(document.getElementById("event-name").value == "" || document.getElementById("event-name").value == null){
+                alert("Please enter an event name");
+                return;
+            }
+            else if(document.getElementById("description-val").value == "" || document.getElementById("description-val").value == null){
+                alert("Please enter an event description");
+                return;
+            }
+                        
+            else if(document.getElementById("location").value == "" || document.getElementById("location").value == null){
+                alert("Please enter an event location");
+                return;
+            }            
 
             var eventVar = new Parse.Object("event");
             eventVar.set("Title", document.getElementById("event-name").value);
@@ -47,9 +59,9 @@
             dateToAdd.setMonth(dayVar[1] - 1);
 
             eventVar.set("dateAndTime", dateToAdd);
-
             var fileUploadControl = $("#pic")[0];
             if (fileUploadControl.files.length > 0) {
+                console.log("no");
                 var file = fileUploadControl.files[0];
                 var name = document.getElementById("pic").value;
                 name = name.split('.').pop();
@@ -75,6 +87,10 @@
                     alert('Image could not be uploaded');
                     // The file either could not be read, or could not be saved to Parse.
                 });
+            }
+            else{
+               alert("Please upload a photo!");
+              //  var file = 'images/Event1.jpg';
             }
         }
 
@@ -109,7 +125,7 @@
         <label for="username" style="font-weight:normal">Public or Private?</label>
         <br>
         <form id="eventtype" action="">
-            <input type="radio" name="eventtype" value="Public">Public
+            <input type="radio" name="eventtype" value="Public" checked="checked">Public
             <br>
             <input type="radio" name="eventtype" value="Private">Private
             <br/>

@@ -17,11 +17,41 @@
     <script type="text/javascript" src="calendar.js"></script>
     <script type="text/javascript">
         Parse.initialize("ceajBSmAu77xOiu9Bki5uO11YFc7G6Xr0kqHTrvu", "EWFhdSHaW1Da1ua68a4NtN2NrVwi1GohZhjL22Ti");
+        function checkFriend(){
+            event.preventDefault();
 
+            var event2 = Parse.Object.extend("User");
+            var query = new Parse.Query(event2);
+            var count = 0;
+            query.find({
+                            success: function(results) {
+                                for(var i = 0; i < results.length; ++i){
+                                    var object = results[i];
+                                    if(document.getElementById("friend-name").value != object.get('email')){
+                                        ++count;
+                                    }
+
+                                }
+                                if(count == results.length){
+                                    alert("That email is not currently associated with an account. The email will not be added to your list of friends.");
+                                    document.getElementById("friend-name").innerHTML = "";
+                                    document.getElementById("friend-name").value = "";
+
+                                    return;
+                                }
+                                else{
+                                    addFriend();
+                                }
+                            }});
+        }
         function addFriend() {
             event.preventDefault();
             Parse.User.current().addUnique("Friends", document.getElementById("friend-name").value);
             Parse.User.current().save();
+            alert("Saved to your list of friends!");
+            document.getElementById("friend-name").innerHTML = "";
+            document.getElementById("friend-name").value = "";
+
         }
 
         function signOut() {
@@ -53,7 +83,7 @@
         <br>
         <br>
         <input type="eventName" id="friend-name" class="login-input" placeholder="Enter a friend's email" autofocus required aria-required="true">
-        <input type="submit" onclick="addFriend();" value="Add Friend" class="login-submit">
+        <input type="submit" onclick="checkFriend();" value="Add Friend" class="login-submit">
 
         <p class="login-help"><a href="landingPage.html">Back</a>
         </p>
