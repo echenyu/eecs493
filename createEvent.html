@@ -102,10 +102,10 @@
 
 <body background="background.png">
     <form class="login" id="eventtype" style="margin: 30px auto;">
-        <h1>EveMt</h1>
-        <input type="eventName" id="event-name" class="login-input" placeholder="Event Name*" autofocus required aria-required="true">
-        <input type="location" id="location" class="login-input" placeholder="Location*" required aria-required="true">
-        <input type="description" id="description-val" class="login-input" placeholder="Description*" id="username-val" required aria-required="true">
+        <h1>Create an event</h1>
+        <label>Event Name</label><input type="eventName" id="event-name" class="login-input" placeholder="Event Name*" autofocus required aria-required="true">
+        <label>Location</label><input type="location" id="location" class="login-input" placeholder="Location*" required aria-required="true">
+        <label>Description</label><input type="description" id="description-val" class="login-input" placeholder="Description*" id="username-val" required aria-required="true">
         <label for="username" style="font-weight:normal">Public or Private?</label>
         <br>
         <form id="eventtype" action="">
@@ -115,9 +115,9 @@
             <br/>
             <br/>
 
-            <input type="date" required aria-required="true" id="date" class="login-input" placeholder="Date*" />
-            <input type="time" name="date" required aria-required="true" id="time" class="login-input" />
-            <label> Event Photo </label>
+            <label>Date</label><input type="date" required aria-required="true" id="date" class="login-input" placeholder="Date*" />
+            <label>Time</label><input type="time" name="date" required aria-required="true" id="time" class="login-input" />
+            <label>Event Photo </label>
             <input type="file" placeholder="Event Picture" id="pic" accept="image/*" class="login-input">
             <input type="submit" onclick="createEventTwo();" value="Create Event" class="login-submit">
 
