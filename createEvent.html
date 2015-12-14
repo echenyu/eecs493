@@ -36,7 +36,10 @@
             eventVar.set("Title", document.getElementById("event-name").value);
             eventVar.set("description", document.getElementById("description-val").value);
             eventVar.set("location", document.getElementById("location").value);
-            eventVar.set("numGoing", 1);
+            var val = Math.floor((Math.random() * 70) + 1);
+            eventVar.set("numGoing", val);
+            eventVar.set("expectedNum", val * ((Math.random() * 1)/ + 1));
+
             var form = document.getElementById("eventtype");
 
             if ($('input[name="eventtype"]:checked').val() == "Private") {
