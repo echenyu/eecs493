@@ -120,6 +120,11 @@
                     var friendsEvents = [];
                     myfriends = ArrNoDupe(myfriends);
 
+                    if (myfriends.length == 0) {
+                        addElements += "<img src= images/noEvent.jpg + style='width:1000px; height:418px;'>"
+                    }
+                    document.getElementById("mainList").innerHTML = addElements;
+                    
                     for (var i = 0; i < myfriends.length; i++) {
                         var query = new Parse.Query(Parse.User);
                         query.equalTo("username", myfriends[i]);
