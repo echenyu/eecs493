@@ -176,6 +176,25 @@
         function accepted(eventID) {
             var user = Parse.User.current();
             var myEvents = user.get("myEvents");
+            var event = Parse.Object.extend("event");
+            var query = new Parse.Query(event);
+            query.equalTo("objectId", eventID);
+
+            query.find({success: function(results) {
+                var object = results[0];
+
+                console.log("hi");
+
+                                            var eventPhoto = object.get('numGoing');
+                                            object.set('numGoing', eventPhoto + 1);
+                                            console.log("Num going is: " + object.get('numGoing'));
+                                                                    
+
+                            }});
+
+
+
+
             user.addUnique("myEvents", eventID);
             user.save().then(function() {
                 // The file has been saved to Parse.

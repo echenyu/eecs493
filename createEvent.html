@@ -18,13 +18,28 @@
 
         function createEventTwo() {
             event.preventDefault();
-
+            if(document.getElementById("event-name").value == "" || document.getElementById("event-name").value == null){
+                alert("Please enter an event name");
+                return;
+            }
+            else if(document.getElementById("description-val").value == "" || document.getElementById("description-val").value == null){
+                alert("Please enter an event description");
+                return;
+            }
+                        
+            else if(document.getElementById("location").value == "" || document.getElementById("location").value == null){
+                alert("Please enter an event location");
+                return;
+            }            
 
             var eventVar = new Parse.Object("event");
             eventVar.set("Title", document.getElementById("event-name").value);
             eventVar.set("description", document.getElementById("description-val").value);
             eventVar.set("location", document.getElementById("location").value);
-            eventVar.set("numGoing", 1);
+            var val = Math.floor((Math.random() * 70) + 1);
+            eventVar.set("numGoing", val);
+            eventVar.set("expectedNum", val * ((Math.random() * 1)/ + 1));
+
             var form = document.getElementById("eventtype");
 
             if ($('input[name="eventtype"]:checked').val() == "Private") {
@@ -47,9 +62,9 @@
             dateToAdd.setMonth(dayVar[1] - 1);
 
             eventVar.set("dateAndTime", dateToAdd);
-
             var fileUploadControl = $("#pic")[0];
             if (fileUploadControl.files.length > 0) {
+                console.log("no");
                 var file = fileUploadControl.files[0];
                 var name = document.getElementById("pic").value;
                 name = name.split('.').pop();
@@ -63,9 +78,8 @@
                         success: function(event) {
                             console.log(eventVar.id);
                             Parse.User.current().addUnique("myEvents", eventVar.id);
-                            Parse.User.current().save()
-                            alert('New Event Made!');
-                            window.location.href = "findEvent.html";
+                            Parse.User.current().save();
+							window.location = "landingPage.html";
                         },
                         error: function(event, error) {
                             alert('failed, ' + error.message);
@@ -75,6 +89,10 @@
                     alert('Image could not be uploaded');
                     // The file either could not be read, or could not be saved to Parse.
                 });
+            }
+            else{
+               alert("Please upload a photo!");
+              //  var file = 'images/Event1.jpg';
             }
         }
 
@@ -102,22 +120,22 @@
 
 <body background="background.png">
     <form class="login" id="eventtype" style="margin: 30px auto;">
-        <h1>EveMt</h1>
-        <input type="eventName" id="event-name" class="login-input" placeholder="Event Name*" autofocus required aria-required="true">
-        <input type="location" id="location" class="login-input" placeholder="Location*" required aria-required="true">
-        <input type="description" id="description-val" class="login-input" placeholder="Description*" id="username-val" required aria-required="true">
+        <h1>Create an event</h1>
+        <label>Event Name</label><input type="eventName" id="event-name" class="login-input" placeholder="Event Name*" autofocus required aria-required="true">
+        <label>Location</label><input type="location" id="location" class="login-input" placeholder="Location*" required aria-required="true">
+        <label>Description</label><input type="description" id="description-val" class="login-input" placeholder="Description*" id="username-val" required aria-required="true">
         <label for="username" style="font-weight:normal">Public or Private?</label>
         <br>
         <form id="eventtype" action="">
-            <input type="radio" name="eventtype" value="Public">Public
+            <input type="radio" name="eventtype" value="Public" checked="checked">Public
             <br>
             <input type="radio" name="eventtype" value="Private">Private
             <br/>
             <br/>
 
-            <input type="date" required aria-required="true" id="date" class="login-input" placeholder="Date*" />
-            <input type="time" name="date" required aria-required="true" id="time" class="login-input" />
-            <label> Event Photo </label>
+            <label>Date</label><input type="date" required aria-required="true" id="date" class="login-input" placeholder="Date*" />
+            <label>Time</label><input type="time" name="date" required aria-required="true" id="time" class="login-input" />
+            <label>Event Photo </label>
             <input type="file" placeholder="Event Picture" id="pic" accept="image/*" class="login-input">
             <input type="submit" onclick="createEventTwo();" value="Create Event" class="login-submit">
 

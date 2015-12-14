@@ -118,9 +118,16 @@
                                 var eventDateAndTime;
                                 if (object.get('dateAndTime') == null) eventDateAndTime = "Event Date and Time Unavailable";
                                 else eventDateAndTime = object.get('dateAndTime').toString().substring(0, 21);
+                                var numGoing;
+                                if(object.get('numGoing') == null) numGoing = "Number of participants not available"
+                                else numGoing = object.get('numGoing');
+                                var numExpected;
+                                if(object.get('expectedNum') == null) numExpected = "Number of participants not available"
+                                else numExpected = Math.floor(object.get('expectedNum'));
+
 
                                 events[counter] = object.id;
-                                addElements += "<tr id=" + counter.toString() + " >" + "<td> <img src=" + eventPhotoURL + " style='width:500px; height:209px;'> </td>" + "<td>" + "<li class='boxedentry' style='height:20px;width:380px'>" + eventTitle + "</li>" + "<li class='boxedentry' style='height:80px;'>" + eventDescription + "</li>" + "<li class='entry'>" + eventLocation + " " + eventDateAndTime + "</li>" + "<button id='notgoing'> Not Going </button>" + "</td>" + "</tr>"
+                                addElements += "<tr id=" + counter.toString() + " >" + "<td> <img src=" + eventPhotoURL + " style='width:500px; height:209px;'> </td>" + "<td>" + "<li class='boxedentry' style='height:20px;width:380px'>" + eventTitle + "</li>" + "<li class='boxedentry' style='height:80px;'>" + eventDescription + "</li>" + "<li class='entry'>" + eventLocation + " " + eventDateAndTime + "</li>" + "<li class='entry'>" + "Number of registered users: " + numGoing + "</li>" + "<li class='entry'>" + "Number of expected users: " + numExpected + "</li>"+ "<button id='notgoing'> Not Going </button>" + "</td>" + "</tr>"
                                 counter += 1;
                                 document.getElementById("mainList").innerHTML = addElements;
 
